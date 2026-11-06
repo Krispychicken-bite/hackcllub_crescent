@@ -1,146 +1,107 @@
-# Gridrunner 2099: Arena Overload
+# Gridrunner 2099
 
-A neon arcade survival shooter built with Python and Pygame. Fight enemies from a fixed, tilted overhead camera, earn points, and unleash a screen-clearing shockwave bomb.
+A small arena shooter built with Python and Pygame, featuring a fixed, tilted camera, tank-style characters, and a shockwave bomb.
+
+## How the project started
+
+I started by making a simple 3D-style shooter. The first version was mostly about getting the basics working: moving around the arena, aiming with the mouse, shooting enemies, and checking collisions. The characters were simple shapes, and the arena used perspective projection to give it depth.
+
+While taking a break from working on it, I thought about the old Tank Hero game. That became the inspiration for the next version. Instead of keeping the player as a basic circle, I redesigned it as a small tank with tracks, a body, and a barrel that turns toward the mouse.
+
+That change gave the project a clearer direction. I started treating it more like a tank arena game, with solid obstacles, clearer enemy silhouettes, and effects that fit the combat rather than adding glow to everything.
+
+## How it developed
+
+The project grew through a few stages:
+
+1. Basic movement, mouse aiming, shooting, and enemy spawning.
+2. A fixed, angled camera and raised walls to give the arena a 3D-style appearance.
+3. A score-based bomb that clears enemies and creates an expanding shockwave.
+4. Generated sound effects and particle bursts.
+5. Tank-inspired character designs, a cleaner interface, and more restrained colours.
+6. Enemy navigation around obstacles, pause controls, and volume settings.
+
+The main shift was moving from adding features to making those features feel consistent with each other.
 
 ## Features
 
-- Fixed elevated camera with perspective projection.
-- Neon arena grid and raised 3D-style walls.
-- Keyboard movement and mouse-directed shooting.
-- Enemy spawning and simple chase behaviour.
-- Health bar, score display, and bomb cooldown indicator.
-- Shockwave bomb that instantly clears active enemies.
-- Procedurally generated sound effects: no external audio files required.
-- Particle bursts for shooting, enemy destruction, wall impacts, damage, and bombs.
-- Restart after game over.
+- Fixed, tilted overhead camera.
+- Tank-style player with a mouse-directed barrel.
+- Angular enemy drones with a different silhouette.
+- Raised walls that block movement and bullets.
+- Grid-based enemy navigation around obstacles.
+- Shooting, health, scoring, and restart controls.
+- Shockwave bomb with a score cost and cooldown.
+- Procedurally generated sounds.
+- Muzzle flashes, impact sparks, debris, and bomb effects.
+- Start screen, pause menu, volume controls, and mute.
 
-The sound and particle features require the sound-and-particle additions to be included in `main.py`.
+## Built with
 
-## Requirements
-
-- Python 3
+- Python
 - Pygame
-- A graphical desktop environment
-- Speakers or headphones for optional audio
+- Python standard-library modules for maths, navigation, and audio sample generation.
 
-## Installation
+No external images, models, or sound files are required.
 
-Open a terminal in the project directory and install Pygame:
+## Running the game
 
-```bash
-python -m pip install pygame
-```
+Install Pygame:
 
-Run the game:
+    python -m pip install --upgrade pygame
 
-```bash
-python main.py
-```
+Run the script:
 
-If your system uses `python3` instead of `python`, use that command for both steps.
-
-## Project Structure
-
-```text
-project/
-├── main.py       # Game code, rendering, sound generation, and effects
-└── README.md     # Project documentation
-```
-
-No external images, models, or audio assets are required by the current implementation.
+    python main.py
 
 ## Controls
 
 | Input | Action |
-| --- | --- |
-| W / Up arrow | Move toward the far end of the arena |
-| S / Down arrow | Move toward the near end of the arena |
-| A / Left arrow | Move left |
-| D / Right arrow | Move right |
-| Left mouse click | Fire toward the cursor's position on the arena floor |
-| Space | Activate the shockwave bomb when available |
-| R | Restart after game over |
-| Esc | Exit |
+| Enter | Start the game |
+| WASD / arrow keys | Move |
+| Mouse | Aim |
+| Left-click | Shoot |
+| Space | Use the bomb |
+| P / Esc | Pause or resume |
+| − / + | Adjust volume |
+| M | Mute |
+| R / Enter | Restart after game over |
+| Q | Quit |
 
-Shooting is click-to-fire rather than automatic while holding the mouse button.
+## Scoring and bombs
 
-## Gameplay
+Each enemy destroyed by a bullet earns 100 points.
 
-### Score
+The bomb costs 500 points and has a five-second cooldown. It clears all active enemies immediately and displays an expanding purple shockwave. Enemies destroyed by the bomb do not award additional points.
 
-Each enemy destroyed by a bullet awards **100 points**. Your displayed score is a spendable balance: activating a bomb subtracts points from it.
+The displayed score is a spendable balance, so using a bomb reduces it.
 
-### Shockwave Bomb
+## What I worked on
 
-- Costs **500 points** per activation.
-- Requires a **5-second cooldown** between activations.
-- Immediately removes all currently active enemies.
-- Creates an expanding purple ring and, with effects installed, particle bursts and a deep blast sound.
-- Does not award points for enemies cleared by the bomb.
+This project brought together several parts of game development:
 
-The expanding ring is visual: enemies are cleared immediately rather than when the ring reaches them. The first bomb has no initial cooldown, but you still need enough points to use it.
+- Projecting world coordinates onto a fixed camera view.
+- Converting mouse positions into aiming directions on the arena floor.
+- Handling movement and bullet collisions.
+- Routing enemies around walls.
+- Generating short sound effects from audio samples.
+- Using particles and brief visual feedback without overwhelming the screen.
+- Keeping timers consistent when the game is paused.
+- Giving the game a more deliberate visual identity.
 
-### Health
+## Current limitations
 
-The player starts with **100 health**. Enemy contact deals **10 damage**, with a **500 ms interval** between damage applications. At zero health, the game ends. Press **R** to reset the run, including the score and bomb cooldown.
+This is a 3D-style game, not a full 3D engine. The world is drawn using Pygame shapes and custom perspective projection.
 
-### Walls and Enemies
+Objects use back-to-front drawing order, so some overlap artifacts are still possible. Enemy navigation is grid-based, and scores are not saved between sessions.
 
-Walls block player movement, enemy movement, and bullets. Enemies spawn approximately every **1.4 seconds**, move toward the player, and slide along walls where possible.
+## Next steps
 
-## Sound and Particle Effects
+- Add different enemy behaviours.
+- Improve depth handling and visual overlap.
+- Refine the arena layout.
+- Add high-score saving.
+- Continue tuning movement, shooting, and difficulty.
 
-Sounds are generated in memory when the game starts. There are no audio files to download or manage.
-
-| Event | Sound | Particles |
-| --- | --- | --- |
-| Shooting | Descending laser pulse | Cyan muzzle sparks |
-| Enemy destruction | Short explosion | Red burst |
-| Wall impact | None | Cyan sparks |
-| Player damage | Electronic hit | Green burst |
-| Bomb activation | Low descending blast | Purple burst and enemy bursts |
-
-The audio system is designed to let the game continue if audio initialization fails. Start with a low speaker volume when testing.
-
-## Customization
-
-Edit the constants near the top of `main.py` to adjust gameplay:
-
-```python
-BOMB_COST = 500
-BOMB_COOLDOWN_MS = 5000
-SPAWN_INTERVAL_MS = 1400
-WALL_HEIGHT = 42
-```
-
-Camera settings control the fixed arena view:
-
-```python
-CAMERA_X = ARENA_WIDTH / 2
-CAMERA_Y = 1000
-CAMERA_HEIGHT = 800
-CAMERA_TARGET_Y = 280
-FOCAL_LENGTH = 780
-```
-
-The camera pitch is calculated automatically from its position and target. You can also edit `WALLS` to change the arena layout, and the entity classes to adjust movement speed or health.
-
-## Implementation Notes and Limitations
-
-- Uses custom perspective projection and Pygame drawing, not a full 3D engine.
-- Characters are rendered as sphere-style shapes, not animated 3D models.
-- Walls and entities use simple back-to-front drawing order; complex overlap can produce visual artifacts.
-- Particles are drawn as an overlay and are not hidden by walls.
-- Enemies use direct chasing and collision sliding, not navigation or pathfinding, so they can get stuck behind obstacles.
-- The window size is fixed in the current implementation.
-- Scores and settings are not saved between sessions.
-
-## Possible Future Improvements
-
-- having the project encapsulated as a program using electron flask
-- Progressive enemy waves and additional enemy types.
-- Enemy pathfinding around walls.
-- High-score saving and a pause menu.
-- Weapon upgrades, pickups, and automatic fire.
-- Sound volume controls and a mute option.
-- Improved depth handling for effects and objects.
+## Inspiration
+Tank Hero inspired the tank-style character direction during development. This project uses its own code-drawn shapes and generated sounds rather than assets from that game.
